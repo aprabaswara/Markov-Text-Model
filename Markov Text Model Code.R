@@ -1,8 +1,8 @@
 ###############################################################################
 ##Group member:
 ##1. Aditya Prabaswara Mardjikoen(s2264710)
-##2. Huiying Chen(s2264943)
-##3. Xiangtian Duan(s2248742)
+##2. Xiangtian Duan(s2248742)
+##3. Huiying Chen(s2264943)
 ###############################################################################
 ##Input the dataset.
 setwd("C:/Users/Aditya Prabaswara/Markov-Text-Model")##Set working directory.
