@@ -4,6 +4,7 @@
 ##2. Huiying Chen(s2264943)
 ##3. Xiangtian Duan(s2248742)
 ###############################################################################
+##Input the dataset.
 setwd("C:/Users/Aditya Prabaswara/Markov-Text-Model")##Set working directory.
 a <- scan("1581-0.txt",what="character",skip=156)##Read text data into a vector 
 ##from the '1581-0.txt' file.
@@ -178,8 +179,36 @@ split_punct <- function(x){
   ##punctuation.
 }
 ###############################################################################
+##Splitting punctuation and generate word vector of the most common word.
 a <- split_punct(a)##Splitting all punctuation in vector a.
 a <- tolower(a)##Change every capital letter in the vector a into lowercase.
 k <- unique(a) ##Vector containing every unique words in vector a. 
 j <- match(a,k)##Find index of unique words in vector a.
-freq <- tabulate(nchar(k))##Tabulate unique words in vector a.
+freq <- tabulate(j)##Count up how many time each unique word occurs
+##in the text.
+freq_sort <- sort(freq,decreasing=TRUE)##Sort unique word frequency from the
+##unique words.
+threshold <- freq_sort[1000]##Set the threshold number of word occurs in vector
+##a.
+b_list<-c()##Create empty vector.
+p<-0##Set initial value for looping.
+##Generate index vector.
+for (i in freq_sort){
+  p<-p+1
+  ##Generate index from 1 until m, where m near 1000.
+  if (i >= threshold){
+    b_list<-c(b_list,p)
+  }
+}
+b1<-c()##Create empty vector.
+for (i in b_list) {
+  b1<-c(b1,j[i])##Generate index of the most common word.
+}
+b<-k[b1]##Create vector of the most common word.
+#######################################################################
+##Create matrix A and simulate 50-word sections
+r <- match(a,b)##Find index of the most common words in vector a.
+C <- cbind(j,r)##Two column matrix in which the first column is the index of
+##common words, and the next column is the index for the following word. i.e.
+##the index vector created by match followed by that vector shifted by one place.
+if (any(is.na(rowSums(C)))==TRUE){C<-na.omit(C)}##Drop rows that contains NA.
