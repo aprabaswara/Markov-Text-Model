@@ -124,18 +124,17 @@ for (i in b_list) {
   b1<-c(b1,j[i])##Generate index of the most common word.
 }
 b<-k[b1]##Create vector of the most common word.
-#############################################################################################################################################################################################
-##Create matrix A and simulate 50-word sections
+###############################################################################################################################################################################
+##Create matrix A
 r <- match(a,b)##Find index of the most common words in vector a.
-C <- cbind(r[1:length(r)-1],r[2:length(r)])##Two column matrix in which the first column is the index of
-##common words, and the next column is the index for the following word. i.e.
-##the index vector created by match followed by that vector shifted by one place.
+C <- cbind(r[1:length(r)-1],r[2:length(r)])##Two column matrix in which the first column is the index of common words, and the next column is the index for the following word.
 if (any(is.na(rowSums(C)))==TRUE){C<-na.omit(C)}##Drop rows that contains NA.
-#############################################################################################################################################################################################
+###############################################################################################################################################################################
 ##Simulation of 50-word sections by taking 50 random sample from vector b.
 index <- 1:length(b)##Initialize the index of vector b.
 text_sample <- rep(0,50)##Store 0 in a vector that consists 50 elements.
 text_sample[1] <- sample(index,size=1)##Initialize the first index to take a text from b.
+##Generate the rest of the sample.
 for (i in c(2:50)){
   text_sample[i] <- sample(index,size=1,prob=A[text_sample[i-1]])##Initialize the rest of the index to take a text from b.
 }
