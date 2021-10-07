@@ -41,13 +41,13 @@ b<-k[which(threshold>=92)]##Create vector of the most common word.
 r <- match(a,b)##Find index of the most common words in vector a.
 C <- cbind(r[1:length(r)-1],r[2:length(r)])##Two column matrix in which the first column is the index of common words, and the next column is the index for the following word.
 C <- C[!rowSums(is.na(C)), ]##Drop rows that contains NA.
-A <- matrix(data = 0, nrow = length(b), ncol = length(b))
+A <- matrix(data = 0, nrow = length(b), ncol = length(b))##Initialize matrix A.
 for (row in 1:nrow(C)){
   i=C[row,1]
   j=C[row,2]
   A[i,j]=A[i,j]+1
 }
-A <- A/rowSums(A)
+A <- A/rowSums(A)##Convert every element in matrix A  so its value will lies between 0 and 1 by dividing each element in each rows with its row sums to make the sum of each rows in matrix A equals to 1.
 ###############################################################################################################################################################################
 ##Simulation of 50-word sections by taking 50 random sample from vector b.
 index <- 1:length(b)##Initialize the index of vector b.
