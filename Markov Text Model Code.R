@@ -11,23 +11,96 @@ n <- length(a) ##Find the length of vector a.
 a <- a[-((n-2909):n)] ##Strip license.
 #########################################################################################################################################################################################
 ##Define the function to split the punctuation (',','.','?','!',':',';').
-split_punct<-function(x,vec){
+split_punct<-function(vec){
   
-  vec<-gsub(x, paste0(" ",x," "),vec,fixed=TRUE)
-  vec<- unlist(strsplit(vec," "))
-  
-  return(vec)
+  #Splitting ',' from text
+  ia <- grep(",",a,fixed=TRUE)
+  #ib <- grep(":",a,fixed=TRUE)
+  '%ni%' <- Negate('%in%') 
+  s <- 1:length(a)
+  na <- s[(s %ni% ia) == TRUE]
+  xs <- rep("",length(ia)+length(a))
+  xs[ia+1:length(ia)] <-paste(',')
+  xs[ia+1:length(ia)-1] <-gsub(',','',a[ia],fixed=TRUE)
+  sa <- grep(",",xs,fixed=TRUE)
+  j <- 1:length(xs)
+  nsa <- j[(j %ni% sa)& (j %ni% (ia+1:length(ia)-1))== TRUE]
+  xs[nsa]<-gsub(',','',a[na],fixed=TRUE)
+  #Splitting ';' from text
+  id <- grep(";",xs,fixed=TRUE)
+  d <- 1:length(xs)
+  nd <- d[(d %ni% id) == TRUE]
+  xd <- rep("",length(id)+length(xs))
+  xd[id+1:length(id)] <-paste(';')
+  xd[id+1:length(id)-1] <-gsub(';','',xs[id],fixed=TRUE)
+  sd <- grep(";",xd,fixed=TRUE)
+  l <- 1:length(xd)
+  nsd <- l[(l %ni% sd)& (l %ni% (id+1:length(id)-1))== TRUE]
+  xd[nsd]<-gsub(';','',xs[nd],fixed=TRUE)
+  #Splitting '?' from text
+  ie <- grep("?",xd,fixed=TRUE)
+  e <- 1:length(xd)
+  ne <- e[(e %ni% ie) == TRUE]
+  xe <- rep("",length(ie)+length(xd))
+  xe[ie+1:length(ie)] <-paste('?')
+  xe[ie+1:length(ie)-1] <-gsub('?','',xd[ie],fixed=TRUE)
+  se <- grep("?",xe,fixed=TRUE)
+  p <- 1:length(xe)
+  nse <- p[(p %ni% se)& (p %ni% (ie+1:length(ie)-1))== TRUE]
+  xe[nse]<-gsub('?','',xd[ne],fixed=TRUE)
+  #Splitting '!' from text
+  ik <- grep("!",xe,fixed=TRUE)
+  k <- 1:length(xe)
+  nk <- k[(k %ni% ik) == TRUE]
+  xk <- rep("",length(ik)+length(xe))
+  xk[ik+1:length(ik)] <-paste('!')
+  xk[ik+1:length(ik)-1] <-gsub('!','',xe[ik],fixed=TRUE)
+  sk <- grep("!",xk,fixed=TRUE)
+  r <- 1:length(xk)
+  nsk <- r[(r %ni% sk)& (r %ni% (ik+1:length(ik)-1))== TRUE]
+  xk[nsk]<-gsub('!','',xe[nk],fixed=TRUE)
+  #Splitting '.' from text
+  iz <- grep(".",xk,fixed=TRUE)
+  z <- 1:length(xk)
+  nz <- z[(z %ni% iz) == TRUE]
+  xz <- rep("",length(iz)+length(xk))
+  xz[iz+1:length(iz)] <-paste('.')
+  xz[iz+1:length(iz)-1] <-gsub('.','',xk[iz],fixed=TRUE)
+  sz <- grep(".",xz,fixed=TRUE)
+  q <- 1:length(xz)
+  nsz <- q[(q %ni% sz)& (q %ni% (iz+1:length(iz)-1))== TRUE]
+  xz[nsz]<-gsub('.','',xk[nz],fixed=TRUE)
+  #Splitting ':' from text
+  iv <- grep(":",xz,fixed=TRUE)
+  v <- 1:length(xz)
+  v1 <- sub(":.*", "", xz[iv])
+  v2 <- sub(".*:", "", xz[iv])
+  nv <- v[(v %ni% iv) == TRUE]
+  xv <- rep("",length(iv)+length(xz))
+  xv[iv+1:length(iv)] <-paste(':')
+  xv[iv+1:length(iv)-1] <-gsub(':','',v1,fixed=TRUE)
+  sv <- grep(":",xv,fixed=TRUE)
+  t <- 1:length(xv)
+  nsv<-t[(t %ni% sv)&(t %ni%(iv+1:length(iv)-1))== TRUE]
+  xv[nsv]<-gsub(':','',xz[nv],fixed=TRUE)
+  xfinal <- rep("",length(v2)+length(xv))
+  ig <- grep(":",xv,fixed=TRUE)
+  g <- 1:length(xv)
+  ng <- g[(g %ni% ig) == TRUE]
+  xfinal[ig+1:length(ig)] <-paste(':')
+  xfinal[ig+1:length(ig)+1] <-gsub(':','',v2,fixed=TRUE)
+  sg <- grep(":",xfinal,fixed=TRUE)
+  h <- 1:length(xfinal)
+  nsg<-h[(h %ni% sg)&(h %ni%(ig+1:length(ig)+1))==TRUE]
+  xfinal[nsg]<- gsub(':','',xv[ng],fixed=TRUE)
+  xfinal<- xfinal[which(xfinal != "")]
+  return(xfinal)
   
 }
 
 #############################################################################################################################################################################################
 ##Splitting punctuation and generate word vector of the most common word.
-a<-split_punct(",",a)##Split all ',' from vector a.
-a<-split_punct(".",a)##Split all '.' from vector a.
-a<-split_punct(";",a)##Split all ';' from vector a.
-a<-split_punct("!",a)##Split all '!' from vector a.
-a<-split_punct("?",a)##Split all '?' from vector a.
-a<-split_punct(":",a)##Split all ':' from vector a.
+a<-split_punct(a)##Split all punctuation from vector a.
 a_original<-a##Store original text after splitting all punctuation.
 a <- tolower(a)##Change every capital letter in the vector a into lowercase.
 k <- unique(a) ##Vector containing every unique words in vector a. 
