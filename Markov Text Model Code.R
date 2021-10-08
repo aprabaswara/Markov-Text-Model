@@ -126,6 +126,7 @@ for (i in b_list) {
 b<-k[b1]##Create vector of the most common word.
 ###############################################################################################################################################################################
 ##Create matrix A
+
 r <- match(a,b)##Find index of the most common words in vector a.
 C <- cbind(r[1:length(r)-1],r[2:length(r)])##Two column matrix in which the first column is the index of common words, and the next column is the index for the following word.
 if (any(is.na(rowSums(C)))==TRUE){C<-na.omit(C)}##Drop rows that contains NA.
